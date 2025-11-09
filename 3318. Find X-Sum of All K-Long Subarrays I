@@ -1,0 +1,30 @@
+You are given an array nums of n integers and two integers k and x.
+The x-sum of an array is calculated by the following procedure:
+Count the occurrences of all elements in the array.
+Keep only the occurrences of the top x most frequent elements. If two elements have the same number of occurrences, the element with the bigger value is considered more frequent.
+Calculate the sum of the resulting array.
+Note that if an array has less than x distinct elements, its x-sum is the sum of the array.
+Return an integer array answer of length n - k + 1 where answer[i] is the x-sum of the subarray nums[i..i + k - 1].
+
+Solution: create a Counter hashmap and reverse sort it in a list format. Add the multiplication of the top 'x' key-value pairs to the sum and append the sum to the 'ans' list
+
+```python
+class Solution:
+    def findXSum(self, nums: List[int], k: int, x: int) -> List[int]:
+        ans = []
+
+        for i in range(0,len(nums)-k+1):
+            count = Counter(nums[i:i+k])
+            if len(count) <= x:
+                ans.append(sum(nums[i:i+k]))
+            
+            else:
+                pairs = list(count.items())
+                pairs.sort(key=lambda p:(p[1], p[0]), reverse=True)
+                print(pairs)
+                curr_sum = 0
+                for num, count in pairs[:x]:
+                    curr_sum += (num*count)
+                ans.append(curr_sum)
+        return ans
+```
